@@ -31,6 +31,10 @@
                         <x-nav-link href="{{ route('solicitacoes.index') }}" :active="request()->routeIs('solicitacoes.index')">
                             {{ __('Gerenciar Pedidos') }}
                         </x-nav-link>
+                    
+                        <x-nav-link href="{{ route('blog.index') }}" :active="request()->routeIs('blog.*')">
+                            {{ __('Histórias') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>

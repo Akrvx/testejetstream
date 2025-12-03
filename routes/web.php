@@ -8,6 +8,9 @@ use App\Livewire\MinhasSolicitacoes;
 use App\Livewire\MinhasCandidaturas;
 use App\Livewire\ListaEventos;
 use App\Livewire\CriarEvento;
+use App\Livewire\CriarHistoria;
+use App\Livewire\Blog;
+use App\LiveWire\LerHistoria;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +51,13 @@ Route::middleware([
     // Eventos
     Route::get('/eventos', ListaEventos::class)->name('eventos.index');
     Route::get('/eventos/criar', CriarEvento::class)->name('eventos.criar');
+
+    // Blog
+    Route::get('/blog', Blog::class)->name('blog.index');
+    Route::get('/blog/escrever', CriarHistoria::class)->name('blog.criar');
+
+    // Ler História
+    Route::get('/blog/{id}', LerHistoria::class)->name('blog.show');
 
 }); 
 // Fim do grupo de proteção
