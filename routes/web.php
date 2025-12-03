@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Livewire\CompletarPerfil; // Importação do componente
+use App\Livewire\GaleriaMentoras;
+use App\Livewire\VerMentora;
+use App\Livewire\MinhasSolicitacoes;
+use App\Livewire\MinhasCandidaturas;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,5 +36,9 @@ Route::middleware([
 
     // 2. Sua página de completar perfil
     Route::get('/completar-perfil', CompletarPerfil::class)->name('completar-perfil');
+    Route::get('/mentoras', GaleriaMentoras::class)->name('mentoras.index');
+    Route::get('/mentoras/{id}', VerMentora::class)->name('mentoras.show');
+    Route::get('/minhas-solicitacoes', MinhasSolicitacoes::class)->name('solicitacoes.index');
+    Route::get('/meus-pedidos', MinhasCandidaturas::class)->name('candidaturas.index');
 
-}); // <--- O fechamento do grupo TEM que ser aqui no final!
+});

@@ -108,6 +108,16 @@
                                 </x-dropdown-link>
                             @endif
 
+                            @if(Auth::user()->role === 'mentora' || Auth::user()->role === 'admin')
+                                <x-nav-link href="{{ route('solicitacoes.index') }}" :active="request()->routeIs('solicitacoes.index')">
+                                    {{ __('Gerenciar Pedidos') }}
+                                </x-nav-link>
+                            @endif
+
+                            <x-nav-link href="{{ route('candidaturas.index') }}" :active="request()->routeIs('candidaturas.index')">
+                                    {{ __('Meus Pedidos') }}
+                            </x-nav-link>
+
                             <div class="border-t border-gray-200 dark:border-gray-600"></div>
 
                             <!-- Authentication -->
