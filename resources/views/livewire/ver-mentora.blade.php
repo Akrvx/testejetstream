@@ -1,9 +1,9 @@
 <div class="py-12">
     <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg transition duration-300">
             
-            <div class="bg-indigo-600 p-6 sm:p-10 text-center sm:text-left sm:flex sm:items-center">
-                <img class="h-24 w-24 rounded-full mx-auto sm:mx-0 border-4 border-white shadow-md" 
+            <div class="bg-indigo-600 dark:bg-indigo-700 p-6 sm:p-10 text-center sm:text-left sm:flex sm:items-center transition duration-300">
+                <img class="h-24 w-24 rounded-full mx-auto sm:mx-0 border-4 border-white dark:border-gray-200 shadow-md" 
                      src="{{ $this->mentora->profile_photo_url }}" 
                      alt="{{ $this->mentora->name }}">
                 
@@ -17,43 +17,43 @@
                 
                 <div class="md:col-span-2 space-y-6">
                     <div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Sobre a Mentora</h3>
-                        <p class="text-gray-600 leading-relaxed">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Sobre a Mentora</h3>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
                             {{ $this->mentora->bio ?? 'Esta mentora ainda não adicionou uma biografia.' }}
                         </p>
                     </div>
 
                     @if($this->mentora->linkedin_url)
                     <div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Redes Profissionais</h3>
-                        <a href="{{ $this->mentora->linkedin_url }}" target="_blank" class="text-blue-600 hover:underline flex items-center">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Redes Profissionais</h3>
+                        <a href="{{ $this->mentora->linkedin_url }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline flex items-center">
                             🔗 Ver LinkedIn
                         </a>
                     </div>
                     @endif
                 </div>
 
-                <div class="bg-gray-50 p-6 rounded-lg h-fit border border-gray-100">
-                    <h3 class="font-bold text-gray-800 mb-4">Interessada na mentoria?</h3>
-                    <p class="text-sm text-gray-500 mb-6">
+                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg h-fit border border-gray-100 dark:border-gray-600 transition duration-300">
+                    <h3 class="font-bold text-gray-800 dark:text-white mb-4">Interessada na mentoria?</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-300 mb-6">
                         Entre em contato para verificar a disponibilidade de agenda.
                     </p>
                     
                     <div class="mt-2">
                         @if($solicitacaoEnviada)
-                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                            <div class="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-300 px-4 py-3 rounded relative mb-4" role="alert">
                                 <strong class="font-bold">Solicitação Enviada!</strong>
                                 <span class="block sm:inline text-sm">Aguarde o contato.</span>
                             </div>
                             
-                            <button disabled class="w-full bg-gray-400 text-white font-bold py-3 px-4 rounded-lg cursor-not-allowed shadow-none">
+                            <button disabled class="w-full bg-gray-400 dark:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg cursor-not-allowed shadow-none">
                                 Solicitação Pendente
                             </button>
                         @else
                             <button 
                                 wire:click="solicitarMentoria" 
                                 wire:loading.attr="disabled"
-                                class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition shadow-md flex justify-center items-center">
+                                class="w-full bg-green-600 dark:bg-green-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 dark:hover:bg-green-600 transition shadow-md flex justify-center items-center">
                                 
                                 <span wire:loading.remove>Solicitar Mentoria</span>
                                 
@@ -68,7 +68,7 @@
                         @endif
                     </div>
                     
-                    <p class="text-xs text-center text-gray-400 mt-4">
+                    <p class="text-xs text-center text-gray-400 dark:text-gray-500 mt-4">
                         A solicitação será registrada no sistema.
                     </p>
                 </div>
@@ -77,7 +77,7 @@
         </div>
         
         <div class="mt-6">
-            <a href="{{ route('mentoras.index') }}" class="text-gray-600 hover:text-gray-900 flex items-center">
+            <a href="{{ route('mentoras.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex items-center transition">
                 ← Voltar para a lista
             </a>
         </div>
