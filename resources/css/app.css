@@ -1,7 +1,33 @@
+/* Importando Orbitron, Sedan SC e BioRhyme */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Sedan+SC&family=BioRhyme:wght@200..800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 [x-cloak] {
     display: none;
+}
+
+/* Forçando a identidade visual globalmente */
+body {
+    background-color: #04030c; /* ellas-dark */
+    color: #ffffff;
+    font-family: "Sedan SC", serif;
+}
+
+h1, h2, h3, h4, h5, .font-orbitron {
+    font-family: "Orbitron", sans-serif;
+}
+
+p {
+    font-family: "BioRhyme", serif;
+}
+
+/* Gradiente de Texto personalizado */
+.text-gradient-ellas {
+    background: linear-gradient(180deg, #a504aa, #e31475, #04cbef);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }

@@ -1,60 +1,85 @@
 <x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+    <div class="mb-8">
+        <a href="/" class="hidden lg:block font-orbitron font-bold text-4xl text-transparent bg-clip-text bg-gradient-to-r from-ellas-purple via-ellas-pink to-ellas-cyan mb-2">
+            Projeto ELLAS
+        </a>
+        <h2 class="font-orbitron text-2xl text-white">Crie sua conta</h2>
+        <p class="font-biorhyme text-gray-400 text-sm mt-2">Junte-se à nossa comunidade tecnológica.</p>
+    </div>
 
-        <x-validation-errors class="mb-4" />
+    <div class="flex mb-8 border-b border-ellas-nav">
+        <a href="{{ route('login') }}" class="pb-2 px-4 font-orbitron text-gray-500 hover:text-white transition-colors">
+            Login
+        </a>
+        <a href="#" class="pb-2 px-4 font-orbitron text-ellas-cyan border-b-2 border-ellas-cyan transition-colors">
+            Cadastro
+        </a>
+    </div>
 
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
+    <x-validation-errors class="mb-4" />
 
-            <div>
-                <x-label for="name" value="{{ __('Name') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            </div>
+    <form method="POST" action="{{ route('register') }}" class="space-y-5">
+        @csrf
 
-            <div class="mt-4">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
-
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-label for="terms">
-                        <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" required />
-
-                            <div class="ms-2">
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Privacy Policy').'</a>',
-                                ]) !!}
-                            </div>
-                        </div>
-                    </x-label>
+        <div class="space-y-2">
+            <x-label for="name" value="{{ __('Nome Completo') }}" />
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ellas-cyan">
+                    <i class="fas fa-user"></i>
                 </div>
-            @endif
-
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-button class="ms-4">
-                    {{ __('Register') }}
-                </x-button>
+                <x-input id="name" class="block w-full pl-10 bg-ellas-dark border-ellas-nav focus:border-ellas-cyan focus:ring focus:ring-ellas-cyan/20" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" placeholder="Como devemos te chamar?" />
             </div>
-        </form>
-    </x-authentication-card>
+        </div>
+
+        <div class="space-y-2">
+            <x-label for="email" value="{{ __('Email') }}" />
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ellas-cyan">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <x-input id="email" class="block w-full pl-10 bg-ellas-dark border-ellas-nav focus:border-ellas-cyan focus:ring focus:ring-ellas-cyan/20" type="email" name="email" :value="old('email')" required autocomplete="username" placeholder="seu@email.com" />
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-2">
+                <x-label for="password" value="{{ __('Senha') }}" />
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ellas-cyan">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <x-input id="password" class="block w-full pl-10 bg-ellas-dark border-ellas-nav focus:border-ellas-cyan focus:ring focus:ring-ellas-cyan/20" type="password" name="password" required autocomplete="new-password" placeholder="••••" />
+                </div>
+            </div>
+            <div class="space-y-2">
+                <x-label for="password_confirmation" value="{{ __('Confirmar') }}" />
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ellas-cyan">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <x-input id="password_confirmation" class="block w-full pl-10 bg-ellas-dark border-ellas-nav focus:border-ellas-cyan focus:ring focus:ring-ellas-cyan/20" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="••••" />
+                </div>
+            </div>
+        </div>
+
+        @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+            <div class="mt-4">
+                <x-label for="terms">
+                    <div class="flex items-center">
+                        <x-checkbox name="terms" id="terms" required class="bg-ellas-dark border-ellas-nav text-ellas-cyan focus:ring-ellas-cyan" />
+                        <div class="ms-2 text-gray-400 text-xs font-biorhyme">
+                            {!! __('Concordo com os :terms_of_service e :privacy_policy', [
+                                    'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-ellas-cyan hover:text-white">'.__('Termos').'</a>',
+                                    'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-ellas-cyan hover:text-white">'.__('Privacidade').'</a>',
+                            ]) !!}
+                        </div>
+                    </div>
+                </x-label>
+            </div>
+        @endif
+
+        <button type="submit" class="w-full py-4 bg-gradient-to-r from-ellas-cyan to-ellas-purple rounded-xl font-orbitron font-bold text-white shadow-[0_0_20px_rgba(4,203,239,0.3)] hover:shadow-[0_0_30px_rgba(4,203,239,0.5)] hover:scale-[1.02] transition-all duration-300 flex justify-center items-center gap-2">
+            CRIAR CONTA <i class="fas fa-rocket"></i>
+        </button>
+    </form>
 </x-guest-layout>

@@ -1,48 +1,68 @@
 <x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+    <div class="mb-10">
+        <a href="/" class="hidden lg:block font-orbitron font-bold text-4xl text-transparent bg-clip-text bg-gradient-to-r from-ellas-purple via-ellas-pink to-ellas-cyan mb-2">
+            Projeto ELLAS
+        </a>
+        <h2 class="font-orbitron text-2xl text-white">Bem-vinda de volta!</h2>
+        <p class="font-biorhyme text-gray-400 text-sm mt-2">Insira seus dados para acessar sua conta.</p>
+    </div>
 
-        <x-validation-errors class="mb-4" />
+    <div class="flex mb-8 border-b border-ellas-nav">
+        <a href="#" class="pb-2 px-4 font-orbitron text-ellas-pink border-b-2 border-ellas-pink transition-colors">
+            Login
+        </a>
+        <a href="{{ route('register') }}" class="pb-2 px-4 font-orbitron text-gray-500 hover:text-white transition-colors">
+            Cadastro
+        </a>
+    </div>
 
-        @session('status')
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ $value }}
+    <x-validation-errors class="mb-4" />
+
+    @session('status')
+        <div class="mb-4 font-medium text-sm text-green-400">
+            {{ $value }}
+        </div>
+    @endsession
+
+    <form method="POST" action="{{ route('login') }}" class="space-y-6">
+        @csrf
+
+        <div class="space-y-2">
+            <x-label for="email" value="{{ __('Email') }}" />
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ellas-purple">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <x-input id="email" class="block w-full pl-10 bg-ellas-dark border-ellas-nav focus:border-ellas-pink focus:ring focus:ring-ellas-pink/20 transition-all" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" placeholder="seu@email.com" />
             </div>
-        @endsession
+        </div>
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-
-            <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-            </div>
-
-            <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
+        <div class="space-y-2">
+            <div class="flex justify-between">
+                <x-label for="password" value="{{ __('Senha') }}" />
                 @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
+                    <a class="text-sm text-ellas-cyan hover:text-ellas-pink font-orbitron transition-colors" href="{{ route('password.request') }}">
+                        {{ __('Esqueceu?') }}
                     </a>
                 @endif
-
-                <x-button class="ms-4">
-                    {{ __('Log in') }}
-                </x-button>
             </div>
-        </form>
-    </x-authentication-card>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ellas-purple">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <x-input id="password" class="block w-full pl-10 bg-ellas-dark border-ellas-nav focus:border-ellas-pink focus:ring focus:ring-ellas-pink/20 transition-all" type="password" name="password" required autocomplete="current-password" placeholder="••••••••" />
+            </div>
+        </div>
+
+        <div class="flex items-center">
+            <label for="remember_me" class="flex items-center cursor-pointer group">
+                <x-checkbox id="remember_me" name="remember" class="bg-ellas-dark border-ellas-nav text-ellas-pink focus:ring-ellas-pink rounded" />
+                <span class="ms-2 text-sm text-gray-400 group-hover:text-white transition-colors font-biorhyme">{{ __('Lembrar de mim') }}</span>
+            </label>
+        </div>
+
+        <button type="submit" class="w-full py-4 bg-gradient-to-r from-ellas-purple to-ellas-pink rounded-xl font-orbitron font-bold text-white shadow-[0_0_20px_rgba(227,20,117,0.3)] hover:shadow-[0_0_30px_rgba(227,20,117,0.5)] hover:scale-[1.02] transition-all duration-300 flex justify-center items-center gap-2">
+            ACESSAR CONTA <i class="fas fa-arrow-right"></i>
+        </button>
+    </form>
 </x-guest-layout>

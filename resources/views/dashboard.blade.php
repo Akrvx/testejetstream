@@ -1,75 +1,71 @@
 <x-app-layout>
-    <x-slot name="header">
-        <!-- Alterado de dark:text-gray-200 para dark:text-indigo-400 para combinar com o tema -->
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-indigo-400 leading-tight">
-            {{ __('Painel Inicial') }}
-        </h2>
-    </x-slot>
-
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6 mb-8 transition duration-300">
-                <div class="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-6 mb-6">
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-800 dark:text-white">
-                            Olá, {{ Auth::user()->name }}! 👋
-                        </h1>
-                        <p class="text-gray-600 dark:text-gray-400 mt-2">
-                            Bem-vinda à nossa comunidade. Você está acessando como: 
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 capitalize">
-                                {{ Auth::user()->role ?? 'Aluna' }}
-                            </span>
-                        </p>
-                    </div>
-                </div>
+            <div class="relative overflow-hidden bg-ellas-card rounded-[50px] p-10 mb-12 shadow-2xl border-t border-r border-white/10 group">
+                <div class="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-ellas-purple/20 to-transparent pointer-events-none group-hover:from-ellas-pink/20 transition-all duration-1000"></div>
 
-                <h3 class="text-lg font-bold text-gray-700 dark:text-gray-300 mb-4">O que você deseja fazer?</h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    
-                    <!-- Botão 1: Mentoras -->
-                    <a href="{{ route('mentoras.index') }}" class="group block p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-500 transition duration-200">
-                        <div class="flex items-center mb-2">
-                            <div class="p-2 bg-purple-100 dark:bg-purple-900/50 rounded-lg text-purple-600 dark:text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                                </svg>
-                            </div>
-                            <h4 class="ml-3 text-lg font-semibold text-gray-800 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400">Buscar Mentoria</h4>
-                        </div>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">Explore nossa lista de mulheres incríveis prontas para te ajudar.</p>
-                    </a>
-
-                    <!-- Botão 2: Perfil -->
-                    <a href="{{ route('completar-perfil') }}" class="group block p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500 transition duration-200">
-                        <div class="flex items-center mb-2">
-                            <div class="p-2 bg-blue-100 dark:bg-blue-900/50 rounded-lg text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
-                            </div>
-                            <h4 class="ml-3 text-lg font-semibold text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">Editar Perfil</h4>
-                        </div>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">Mantenha sua bio, LinkedIn e área de atuação sempre atualizados.</p>
-                    </a>
-
-                    <!-- Botão 3: Eventos -->
-                    <a href="{{ route('eventos.index') }}" class="group block p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md hover:border-green-300 dark:hover:border-green-500 transition duration-200">
-                        <div class="flex items-center mb-2">
-                            <div class="p-2 bg-green-100 dark:bg-green-900/50 rounded-lg text-green-600 dark:text-green-400 group-hover:bg-green-600 group-hover:text-white transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                            </div>
-                            <h4 class="ml-3 text-lg font-semibold text-gray-800 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400">Eventos e Workshops</h4>
-                        </div>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">Inscreva-se em encontros exclusivos e aprenda ao vivo.</p>
-                    </a>
-
+                <div class="relative z-10">
+                    <h1 class="font-orbitron text-4xl mb-4 text-white">
+                        Olá, {{ Auth::user()->name }}! 👋
+                    </h1>
+                    <p class="font-biorhyme text-xl text-gray-300 max-w-2xl">
+                        Bem-vinda ao seu painel. O que você gostaria de explorar hoje?
+                    </p>
+                    <div class="w-[200px] h-[3px] bg-ellas-gradient mt-6 mb-2 rounded-full"></div>
                 </div>
             </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <a href="{{ route('completar-perfil') }}" class="group block bg-ellas-card p-8 rounded-[20px] border-t-4 border-transparent hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-[0_20px_40px_rgba(165,4,170,0.2)] relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-ellas-gradient"></div>
+                    <div class="text-4xl mb-6 text-ellas-purple group-hover:scale-110 transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                    </div>
+                    <h3 class="font-orbitron text-2xl text-white mb-2 group-hover:text-ellas-purple transition-colors">Meu Perfil</h3>
+                    <p class="font-biorhyme text-gray-400 text-sm">Atualize seus dados e currículo.</p>
+                </a>
+
+                <a href="{{ route('blog.index') }}" class="group block bg-ellas-card p-8 rounded-[20px] border-t-4 border-transparent hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-[0_20px_40px_rgba(227,20,117,0.2)] relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-ellas-gradient"></div>
+                    <div class="text-4xl mb-6 text-ellas-pink group-hover:scale-110 transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                    </div>
+                    <h3 class="font-orbitron text-2xl text-white mb-2 group-hover:text-ellas-pink transition-colors">Histórias</h3>
+                    <p class="font-biorhyme text-gray-400 text-sm">Inspire-se com trajetórias incríveis.</p>
+                </a>
+
+                <a href="{{ route('eventos.index') }}" class="group block bg-ellas-card p-8 rounded-[20px] border-t-4 border-transparent hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-[0_20px_40px_rgba(4,203,239,0.2)] relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-ellas-gradient"></div>
+                    <div class="text-4xl mb-6 text-ellas-cyan group-hover:scale-110 transition-transform duration-300">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    </div>
+                    <h3 class="font-orbitron text-2xl text-white mb-2 group-hover:text-ellas-cyan transition-colors">Eventos</h3>
+                    <p class="font-biorhyme text-gray-400 text-sm">Inscreva-se em workshops e palestras.</p>
+                </a>
+
+                <a href="{{ route('candidaturas.index') }}" class="group block bg-ellas-card p-8 rounded-[20px] border-t-4 border-transparent hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-[0_20px_40px_rgba(255,255,255,0.1)] relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-ellas-gradient"></div>
+                    <div class="text-4xl mb-6 text-gray-300 group-hover:text-white group-hover:scale-110 transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
+                    </div>
+                    <h3 class="font-orbitron text-2xl text-white mb-2 group-hover:text-white transition-colors">Inscrições</h3>
+                    <p class="font-biorhyme text-gray-400 text-sm">Acompanhe o status das suas vagas.</p>
+                </a>
+
+                @if(Auth::user()->role === 'mentora' || Auth::user()->role === 'admin')
+                    <a href="{{ route('solicitacoes.index') }}" class="group block bg-ellas-card p-8 rounded-[20px] border-t-4 border-transparent hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-[0_20px_40px_rgba(227,20,117,0.3)] relative overflow-hidden col-span-1 md:col-span-2 lg:col-span-1 border-r border-ellas-pink/30">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-ellas-pink to-ellas-purple"></div>
+                        <div class="text-4xl mb-6 text-ellas-pink group-hover:scale-110 transition-transform duration-300">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        </div>
+                        <h3 class="font-orbitron text-2xl text-white mb-2 group-hover:text-ellas-pink transition-colors">Gestão</h3>
+                        <p class="font-biorhyme text-gray-400 text-sm">Área exclusiva para mentoras e admins.</p>
+                    </a>
+                @endif
+
+            </div>
         </div>
     </div>
 </x-app-layout>
