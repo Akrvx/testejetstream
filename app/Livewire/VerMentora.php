@@ -4,13 +4,15 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\User;
-use App\Models\Solicitacao; // <--- Importe o modelo novo!
+use App\Models\Solicitacao;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail; // <--- IMPORTANTE
+use App\Mail\NovaSolicitacaoMentoria; // <--- IMPORTANTE
 
 class VerMentora extends Component
 {
     public User $mentora;
-    public $solicitacaoEnviada = false; // Para controlar a mensagem de sucesso
+    public $solicitacaoEnviada = false;
 
     public function mount($id)
     {
@@ -18,7 +20,6 @@ class VerMentora extends Component
         
         if ($this->mentora->role !== 'mentora') { abort(404); }
 
-        // Verifica se já existe uma solicitação enviada para não duplicar
         $jaSolicitou = Solicitacao::where('mentora_id', $this->mentora->id)
             ->where('aluna_id', Auth::id())
             ->exists();
@@ -30,22 +31,26 @@ class VerMentora extends Component
 
     public function solicitarMentoria()
     {
-        // 1. Não deixa pedir pra si mesma
         if (Auth::id() === $this->mentora->id) {
             return;
         }
 
-        // 2. Cria o registro no banco
-        Solicitacao::create([
+        // 1. Cria no Banco
+        $solicitacao = Solicitacao::create([
             'mentora_id' => $this->mentora->id,
-            'aluna_id' => Auth::id(), // Pega o ID de quem está logada
+            'aluna_id' => Auth::id(),
             'status' => 'pendente'
         ]);
 
-        // 3. Atualiza a tela
+        // 2. ENVIA O E-MAIL (A MÁGICA ACONTECE AQUI)
+        try {
+            Mail::to($this->mentora->email)->send(new NovaSolicitacaoMentoria($solicitacao));
+        } catch (\Exception $e) {
+            // Se der erro no envio, não travamos o site, apenas logamos
+            \Log::error('Erro ao enviar email: ' . $e->getMessage());
+        }
+
         $this->solicitacaoEnviada = true;
-        
-        // Opcional: Aqui você enviaria um e-mail para a mentora avisando
     }
 
     public function render()

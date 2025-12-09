@@ -31,7 +31,8 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6 transition duration-300">
                 <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Ações Rápidas</h3>
                 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Ajustei para grid-cols-5 para caberem todos na mesma linha em telas grandes -->
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                     <a href="{{ route('eventos.criar') }}" class="p-4 border border-gray-200 dark:border-gray-700 rounded hover:bg-gray-50 dark:hover:bg-gray-700 text-center transition group">
                         <span class="block text-2xl mb-2 group-hover:scale-110 transition-transform">📅</span>
                         <span class="text-sm font-bold text-gray-700 dark:text-gray-300">Novo Evento</span>
@@ -47,10 +48,15 @@
                         <span class="text-sm font-bold text-gray-700 dark:text-gray-300">Ver Usuários</span>
                     </a>
                     
-                    <!-- Botão ATIVO para Aprovar Mentoras -->
                     <a href="{{ route('admin.aprovar') }}" class="p-4 border border-gray-200 dark:border-gray-700 rounded hover:bg-gray-50 dark:hover:bg-gray-700 text-center transition group">
                         <span class="block text-2xl mb-2 group-hover:scale-110 transition-transform">✅</span>
                         <span class="text-sm font-bold text-gray-700 dark:text-gray-300">Aprovar Mentoras</span>
+                    </a>
+
+                    <!-- NOVO BOTÃO ADICIONADO AQUI -->
+                    <a href="{{ route('admin.depoimentos') }}" class="p-4 border border-gray-200 dark:border-gray-700 rounded hover:bg-gray-50 dark:hover:bg-gray-700 text-center transition group">
+                        <span class="block text-2xl mb-2 group-hover:scale-110 transition-transform">💬</span>
+                        <span class="text-sm font-bold text-gray-700 dark:text-gray-300">Depoimentos</span>
                     </a>
                 </div>
             </div>

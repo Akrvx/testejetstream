@@ -11,10 +11,16 @@ use App\Livewire\CriarEvento;
 use App\Livewire\CriarHistoria;
 use App\Livewire\Blog;
 use App\Livewire\LerHistoria;
-use App\Livewire\AprovarMentoras; // <--- Importação necessária
+use App\Livewire\AprovarMentoras;
+use App\Livewire\GerenciarDepoimentos; // Importação
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\AdminLoginController;
+// Models para a Home Page
+use App\Models\User;
+use App\Models\Event;
+use App\Models\Story;
+use App\Models\Testimonial;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,9 +28,14 @@ use App\Http\Controllers\AdminLoginController;
 |--------------------------------------------------------------------------
 */
 
-// Página Inicial
+// Página Inicial com Dados Reais
 Route::get('/', function () {
-    return view('pages.home'); 
+    return view('pages.home', [
+        'totalUsers' => User::count(),
+        'totalEvents' => Event::count(),
+        'totalStories' => Story::count(),
+        'testimonials' => Testimonial::where('is_active', true)->latest()->take(3)->get()
+    ]); 
 })->name('home');
 
 // Página Sobre
@@ -37,9 +48,12 @@ Route::get('/servicos', function () {
     return view('pages.services');
 })->name('site.services');
 
-// Página de Depoimentos
+// Página de Depoimentos (Pública)
 Route::get('/depoimentos', function () {
-    return view('pages.testimonials');
+    // Também precisa enviar os depoimentos para esta página
+    return view('pages.testimonials', [
+        'testimonials' => Testimonial::where('is_active', true)->latest()->get()
+    ]);
 })->name('site.testimonials');
 
 
@@ -107,8 +121,8 @@ Route::middleware([
     Route::get('/blog/escrever', CriarHistoria::class)->name('blog.criar');
     Route::get('/blog/{id}', LerHistoria::class)->name('blog.show');
 
-    // --- NOVA ROTA ADICIONADA ---
-    // Rota exclusiva para Admins aprovarem mentoras
+    // --- ÁREA DE ADMINISTRAÇÃO (Livewire) ---
     Route::get('/admin/aprovar-mentoras', AprovarMentoras::class)->name('admin.aprovar');
+    Route::get('/admin/depoimentos', GerenciarDepoimentos::class)->name('admin.depoimentos');
 
 });
