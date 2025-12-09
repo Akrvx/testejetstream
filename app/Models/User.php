@@ -37,6 +37,8 @@ class User extends Authenticatable
         'area_atuacao',        // Ex: Backend, Design
         'linkedin_url',        // Link do perfil profissional
         'solicitou_mentoria',  // Controle para o Admin saber quem quer ser mentora
+        'github_url',
+        'nivel_experiencia',
     ];
 
     /**

@@ -65,6 +65,25 @@
                     >
                 </div>
 
+                      <!-- Nível de Experiência -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Nível de Experiência</label>
+                    <select wire:model="nivel_experiencia" class="shadow border dark:border-gray-600 rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 leading-tight focus:outline-none focus:shadow-outline focus:ring-blue-500">
+                        <option value="">Selecione...</option>
+                        <option value="Iniciante">Iniciante / Estudante</option>
+                        <option value="Júnior">Júnior</option>
+                        <option value="Pleno">Pleno</option>
+                        <option value="Sênior">Sênior</option>
+                        <option value="Liderança">Liderança / Gestão</option>
+                    </select>
+                </div>
+
+                <!-- GitHub -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">GitHub / Portfólio (URL)</label>
+                    <input type="text" wire:model="github_url" placeholder="https://github.com/voce" class="shadow appearance-none border dark:border-gray-600 rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 leading-tight focus:outline-none focus:shadow-outline focus:ring-blue-500">
+                </div>
+
                 <!-- Campo Bio -->
                 <div class="mb-6">
                     <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Sobre Mim</label>
@@ -80,6 +99,8 @@
                         Salvar Perfil
                     </button>
                 </div>
+
+          
 
             </form>
         </div>

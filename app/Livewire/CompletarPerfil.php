@@ -10,8 +10,10 @@ class CompletarPerfil extends Component
     public $role;
     public $area_atuacao;
     public $linkedin_url;
+    public $github_url; // Novo Campo
+    public $nivel_experiencia; // Novo Campo
     public $bio;
-    public $solicitou_mentoria; // Nova variável para controlar o botão
+    public $solicitou_mentoria;
 
     public function mount()
     {
@@ -19,16 +21,16 @@ class CompletarPerfil extends Component
         $this->role = $user->role;
         $this->area_atuacao = $user->area_atuacao;
         $this->linkedin_url = $user->linkedin_url;
+        $this->github_url = $user->github_url; // Carrega do banco
+        $this->nivel_experiencia = $user->nivel_experiencia; // Carrega do banco
         $this->bio = $user->bio;
-        // Carrega do banco se ela já pediu ou não
         $this->solicitou_mentoria = $user->solicitou_mentoria; 
     }
 
-    // Função nova: Aluna pede para virar mentora
     public function pedirParaSerMentora()
     {
         Auth::user()->update(['solicitou_mentoria' => true]);
-        $this->solicitou_mentoria = true; // Atualiza a tela na hora
+        $this->solicitou_mentoria = true;
         session()->flash('message', 'Sua solicitação foi enviada para análise! Aguarde a aprovação.');
     }
 
@@ -36,12 +38,16 @@ class CompletarPerfil extends Component
     {
         $this->validate([
             'area_atuacao' => 'required|min:3',
+            'nivel_experiencia' => 'nullable|string', // Validação simples
+            'github_url' => 'nullable|url', // Validação de URL
             'bio' => 'nullable|max:500',
         ]);
 
         Auth::user()->update([
             'area_atuacao' => $this->area_atuacao,
             'linkedin_url' => $this->linkedin_url,
+            'github_url' => $this->github_url,
+            'nivel_experiencia' => $this->nivel_experiencia,
             'bio' => $this->bio,
         ]);
 
