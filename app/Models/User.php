@@ -31,6 +31,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        // Campos personalizados do Projeto ELLAS:
+        'role',                // 'admin', 'mentora', 'aluna'
+        'bio',                 // Biografia
+        'area_atuacao',        // Ex: Backend, Design
+        'linkedin_url',        // Link do perfil profissional
+        'solicitou_mentoria',  // Controle para o Admin saber quem quer ser mentora
     ];
 
     /**
@@ -64,6 +70,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'solicitou_mentoria' => 'boolean', // Garante que venha como true/false
         ];
     }
 }

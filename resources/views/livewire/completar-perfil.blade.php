@@ -4,21 +4,42 @@
             
             <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Complete seu Perfil</h2>
 
+            <!-- Mensagem de Sucesso -->
+            @if (session()->has('message'))
+                <div class="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-300 px-4 py-3 rounded relative mb-4">
+                    {{ session('message') }}
+                </div>
+            @endif
+
             <form wire:submit.prevent="salvar">
                 
-                <!-- Info Box -->
-                <div class="mb-4">
+                <!-- Info Box com Status e Botão de Candidatura -->
+                <div class="mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-700/50">
                     <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Seu Perfil Atual:</label>
-                    <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded text-gray-600 dark:text-gray-200">
-                        @if($role === 'mentora')
-                            🎓 Mentora Verificada
-                        @else
-                            👩‍💻 Aluna / Entusiasta
+                    
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="p-3 bg-white dark:bg-gray-600 rounded text-gray-600 dark:text-gray-200 font-bold shadow-sm inline-block">
+                            @if($role === 'mentora')
+                                🎓 Mentora Verificada
+                            @else
+                                👩‍💻 Aluna / Entusiasta
+                            @endif
+                        </div>
+
+                        <!-- Lógica do Botão de Candidatura -->
+                        @if($role === 'aluna')
+                            @if($solicitou_mentoria)
+                                <div class="flex items-center text-yellow-600 dark:text-yellow-400 font-bold text-sm bg-yellow-100 dark:bg-yellow-900/30 px-3 py-2 rounded border border-yellow-200 dark:border-yellow-700">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    Análise Pendente
+                                </div>
+                            @else
+                                <button type="button" wire:click="pedirParaSerMentora" class="text-sm text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 px-4 py-2 rounded-lg transition shadow">
+                                    Quero me candidatar a Mentora
+                                </button>
+                            @endif
                         @endif
                     </div>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        Deseja ser uma mentora? <a href="#" class="text-blue-500 dark:text-blue-400 underline">Aplique aqui futuramente.</a>
-                    </p>
                 </div>
 
                 <!-- Campo Área de Atuação -->

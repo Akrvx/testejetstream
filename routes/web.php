@@ -11,23 +11,41 @@ use App\Livewire\CriarEvento;
 use App\Livewire\CriarHistoria;
 use App\Livewire\Blog;
 use App\Livewire\LerHistoria;
+use App\Livewire\AprovarMentoras; // <--- Importação necessária
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\AdminLoginController;
 
-
 /*
 |--------------------------------------------------------------------------
-| Rota Pública
+| Rotas Públicas (Site Institucional Multi-páginas)
 |--------------------------------------------------------------------------
 */
+
+// Página Inicial
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('pages.home'); 
+})->name('home');
+
+// Página Sobre
+Route::get('/sobre', function () {
+    return view('pages.about');
+})->name('site.about');
+
+// Página de Serviços
+Route::get('/servicos', function () {
+    return view('pages.services');
+})->name('site.services');
+
+// Página de Depoimentos
+Route::get('/depoimentos', function () {
+    return view('pages.testimonials');
+})->name('site.testimonials');
+
 
 /*
 |--------------------------------------------------------------------------
-| Rotas de Administração (Apenas Admins)
+| Rotas de Administração (Controllers Customizados)
 |--------------------------------------------------------------------------
 */
 // Login admin
@@ -35,15 +53,16 @@ Route::get('/admin/login', [AdminLoginController::class, 'showLoginForm'])->name
 Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('admin.login.submit');
 Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
-// Dashboard admin protegido
+// Dashboard admin protegido (Middleware customizado)
 Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', function () {
-        return view('admin.dashboard'); // Blade admin
+        return view('admin.dashboard'); 
     })->name('dashboard');
 });
+
 /*
 |--------------------------------------------------------------------------
-| Rotas Protegidas (usuário logado e verificado)
+| Rotas Protegidas (Sistema Principal / Jetstream)
 |--------------------------------------------------------------------------
 */
 Route::middleware([
@@ -52,24 +71,44 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
+    // Lógica do "Semáforo" de Dashboards
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        $role = Auth::user()->role;
+
+        if ($role === 'admin') {
+            return view('dashboards.admin');
+        } 
+        
+        if ($role === 'mentora') {
+            return view('dashboards.mentora');
+        }
+
+        // Padrão para Aluna
+        return view('dashboards.aluna');
     })->name('dashboard');
 
+    // Perfil
     Route::get('/completar-perfil', CompletarPerfil::class)->name('completar-perfil');
 
+    // Mentoras
     Route::get('/mentoras', GaleriaMentoras::class)->name('mentoras.index');
     Route::get('/mentoras/{id}', VerMentora::class)->name('mentoras.show');
 
+    // Solicitações e Pedidos
     Route::get('/minhas-solicitacoes', MinhasSolicitacoes::class)->name('solicitacoes.index');
     Route::get('/meus-pedidos', MinhasCandidaturas::class)->name('candidaturas.index');
 
+    // Eventos
     Route::get('/eventos', ListaEventos::class)->name('eventos.index');
     Route::get('/eventos/criar', CriarEvento::class)->name('eventos.criar');
 
+    // Blog
     Route::get('/blog', Blog::class)->name('blog.index');
     Route::get('/blog/escrever', CriarHistoria::class)->name('blog.criar');
-
     Route::get('/blog/{id}', LerHistoria::class)->name('blog.show');
+
+    // --- NOVA ROTA ADICIONADA ---
+    // Rota exclusiva para Admins aprovarem mentoras
+    Route::get('/admin/aprovar-mentoras', AprovarMentoras::class)->name('admin.aprovar');
 
 });
