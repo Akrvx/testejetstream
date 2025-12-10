@@ -5,7 +5,7 @@
         <div class="mb-8 text-center animate__animated animate__fadeInDown">
             <a href="/" class="flex justify-center mb-6">
                 <div class="p-4 rounded-full bg-ellas-card border border-ellas-purple/30 shadow-[0_0_30px_rgba(147,51,234,0.3)]">
-                    <img src="{{ asset('IMG/2.png') }}" class="h-20 w-auto" />
+                    <img src="{{ asset('img/2.png') }}" class="h-20 w-auto" />
                 </div>
             </a>
             <h2 class="text-3xl font-bold text-white font-orbitron tracking-wider">
