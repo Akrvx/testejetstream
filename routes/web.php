@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Artisan;
 use App\Livewire\CompletarPerfil;
 use App\Livewire\GaleriaMentoras;
 use App\Livewire\VerMentora;
@@ -14,16 +16,59 @@ use App\Livewire\LerHistoria;
 use App\Livewire\AprovarMentoras;
 use App\Livewire\GerenciarDepoimentos;
 use App\Livewire\MinhaAgenda;
-use App\Livewire\GerenciarAulas; // <--- Importação Nova
+use App\Livewire\GerenciarAulas;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\AdminLoginController;
-use Illuminate\Support\Facades\Mail;
 // Models para a Home Page
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Story;
 use App\Models\Testimonial;
+
+/*
+|--------------------------------------------------------------------------
+| ROTA DE DIAGNÓSTICO DE E-MAIL (Temporária)
+|--------------------------------------------------------------------------
+| Acesse: /debug-email para ver as configurações reais e testar envio
+*/
+Route::get('/debug-email', function () {
+    try {
+        // 1. Força limpeza do cache para garantir que leu as variáveis novas
+        Artisan::call('config:clear');
+
+        $config = config('mail.mailers.smtp');
+        
+        // Mascara a senha para segurança
+        $senhaMascarada = substr($config['password'] ?? '', 0, 3) . '...';
+
+        $info = "
+        <h1>Diagnóstico de E-mail</h1>
+        <h3>Configuração Carregada pelo Laravel:</h3>
+        <ul>
+            <li><strong>Host:</strong> {$config['host']}</li>
+            <li><strong>Porta:</strong> {$config['port']}</li>
+            <li><strong>Criptografia:</strong> {$config['encryption']}</li>
+            <li><strong>Usuário:</strong> {$config['username']}</li>
+            <li><strong>Senha:</strong> {$senhaMascarada}</li>
+        </ul>
+        <hr>
+        <h3>Tentando enviar e-mail de teste...</h3>
+        ";
+
+        // Tenta enviar
+        Mail::raw('Teste de envio Railway (Diagnóstico) 🚀', function ($msg) {
+            $msg->to('mauriciolc.codes@gmail.com') // <--- O E-mail vai para aqui (mude se quiser fixo)
+                ->subject('Teste de Conexão - Projeto Ellas');
+        });
+
+        return $info . "<h2 style='color:green'>SUCESSO! Conexão estabelecida e e-mail enviado.</h2>";
+
+    } catch (\Exception $e) {
+        return $info . "<h2 style='color:red'>FALHA:</h2><pre>" . $e->getMessage() . "</pre>";
+    }
+});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -76,7 +121,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    // 1. Dashboard Inteligente ("Semáforo")
+    // 1. Dashboard Inteligente
     Route::get('/dashboard', function () {
         $role = Auth::user()->role;
 
@@ -104,8 +149,6 @@ Route::middleware([
     Route::get('/eventos', ListaEventos::class)->name('eventos.index');
     Route::get('/eventos/criar', CriarEvento::class)->name('eventos.criar');
     Route::get('/minha-agenda', MinhaAgenda::class)->name('agenda.index');
-    
-    // --- NOVA ROTA PARA MENTORAS GERENCIAREM AULAS ---
     Route::get('/minhas-aulas', GerenciarAulas::class)->name('aulas.index');
 
     // Módulo de Blog
@@ -116,17 +159,5 @@ Route::middleware([
     // 3. Área Administrativa (Protegida)
     Route::get('/admin/aprovar-mentoras', AprovarMentoras::class)->name('admin.aprovar');
     Route::get('/admin/depoimentos', GerenciarDepoimentos::class)->name('admin.depoimentos');
-
-    Route::get('/teste-email', function () {
-    try {
-        Mail::raw('Teste de envio pelo Railway!', function ($msg) {
-            $msg->to('seu.email.pessoal@gmail.com') // Coloque seu email real aqui para receber
-                ->subject('Teste Resend Railway');
-        });
-        return 'E-mail enviado com sucesso!';
-    } catch (\Exception $e) {
-        return 'Erro: ' . $e->getMessage();
-    }
-});
 
 });
