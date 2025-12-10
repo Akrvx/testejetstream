@@ -44,10 +44,11 @@
                 <!-- ATENÇÃO: Renomeie seu arquivo na pasta public/img para 'login.jpg' (sem acento/espaço) -->
                 <img class="absolute inset-0 h-full w-full object-cover" src="{{ asset('img/página de login.jpg') }}" alt="Background" onerror="this.style.display='none'">
                 
-                <!-- Fallback (Gradiente) caso a imagem falhe -->
-                <div class="absolute inset-0 bg-gradient-to-br from-ellas-purple/30 via-ellas-dark to-black z-0"></div>
+                <!-- Gradiente apenas na parte inferior (para o texto) -->
+                <div class="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-ellas-dark via-ellas-dark/80 to-transparent z-10"></div>
 
-                <div class="absolute inset-0 bg-gradient-to-l from-ellas-dark/90 via-ellas-purple/10 to-transparent z-10"></div>
+                <!-- Gradiente suave na esquerda (para unir com o formulário) -->
+                <div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-ellas-dark to-transparent z-10"></div>
                 
                 <div class="absolute bottom-20 left-20 right-20 text-white z-20 drop-shadow-lg">
                     <h2 class="font-orbitron text-4xl font-bold mb-4">Juntas transformamos o futuro.</h2>
