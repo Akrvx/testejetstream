@@ -20,11 +20,11 @@ return [
         'smtp' => [
             'transport' => 'smtp',
             'url' => env('MAIL_URL'),
-            'host' => 'smtp.resend.com', // Forçado
-            'port' => 2525,              // Forçado
-            'encryption' => 'tls',       // <--- FORÇADO (O Pulo do Gato)
-            'username' => 'resend',      // Forçado
-            'password' => env('MAIL_PASSWORD'), // A senha continua vindo do ENV (segurança)
+            'host' => 'smtp.resend.com',
+            'port' => 465,               // <--- MUDANÇA: Porta SSL
+            'encryption' => 'ssl',       // <--- MUDANÇA: Criptografia SSL
+            'username' => 'resend',
+            'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
@@ -71,7 +71,7 @@ return [
     */
 
     'from' => [
-        'address' => 'onboarding@resend.dev', // Forçado para teste
+        'address' => 'onboarding@resend.dev',
         'name' => 'Projeto ELLAS',
     ],
 
