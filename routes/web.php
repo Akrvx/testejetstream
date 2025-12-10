@@ -33,11 +33,15 @@ use App\Models\Testimonial;
 | Acesse: /debug-email para ver as configurações reais e testar envio
 */
 Route::get('/debug-email', function () {
+    // Inicializa a variável antes para evitar erro no catch
+    $info = "Iniciando diagnóstico...<br>";
+
     try {
         // 1. Força limpeza do cache para garantir que leu as variáveis novas
         Artisan::call('config:clear');
 
         $config = config('mail.mailers.smtp');
+        $from = config('mail.from');
         
         // Mascara a senha para segurança
         $senhaMascarada = substr($config['password'] ?? '', 0, 3) . '...';
@@ -51,15 +55,18 @@ Route::get('/debug-email', function () {
             <li><strong>Criptografia:</strong> {$config['encryption']}</li>
             <li><strong>Usuário:</strong> {$config['username']}</li>
             <li><strong>Senha:</strong> {$senhaMascarada}</li>
+            <li><strong>From Address:</strong> {$from['address']}</li>
+            <li><strong>From Name:</strong> {$from['name']}</li>
         </ul>
         <hr>
         <h3>Tentando enviar e-mail de teste...</h3>
         ";
 
         // Tenta enviar
-        Mail::raw('Teste de envio Railway (Diagnóstico) 🚀', function ($msg) {
-            $msg->to('mauriciolc.codes@gmail.com') // <--- O E-mail vai para aqui (mude se quiser fixo)
-                ->subject('Teste de Conexão - Projeto Ellas');
+        Mail::raw('Teste de envio Railway (Diagnóstico) 🚀', function ($msg) use ($from) {
+            $msg->to('seu.email.pessoal@gmail.com') // <--- O E-mail vai para aqui
+                ->subject('Teste de Conexão - Projeto Ellas')
+                ->from($from['address'], $from['name']);
         });
 
         return $info . "<h2 style='color:green'>SUCESSO! Conexão estabelecida e e-mail enviado.</h2>";
