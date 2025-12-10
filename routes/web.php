@@ -28,62 +28,69 @@ use App\Models\Testimonial;
 
 /*
 |--------------------------------------------------------------------------
-| ROTA DE DIAGNÓSTICO DE E-MAIL (Temporária)
+| ROTA DE DIAGNÓSTICO DE E-MAIL (AVANÇADA)
 |--------------------------------------------------------------------------
 | Acesse: /debug-email para ver as configurações reais e testar envio
 */
 Route::get('/debug-email', function () {
-    // Inicializa a variável antes para evitar erro no catch
-    $info = "Iniciando diagnóstico...<br>";
+    // 1. Aumenta o tempo limite para 120 segundos para evitar o erro de "30 seconds exceeded"
+    set_time_limit(120);
+
+    // Inicializa variável de log para não dar erro de undefined
+    $info = "<h1>Diagnóstico de E-mail (Resend/SMTP)</h1>";
 
     try {
-        // 1. Força limpeza do cache para garantir que leu as variáveis novas
+        // 2. Limpa cache em tempo real
         Artisan::call('config:clear');
+        $info .= "<p style='color:green'>✔ Cache de configuração limpo.</p>";
 
         $config = config('mail.mailers.smtp');
         $from = config('mail.from');
         
-        // Mascara a senha para segurança
-        $senhaMascarada = substr($config['password'] ?? '', 0, 3) . '...';
-
-        // Prepara valores seguros (se não existir, mostra "NÃO DEFINIDO")
+        // Tratamento de valores nulos (Proteção contra erro "Undefined array key")
         $host = $config['host'] ?? '<span style="color:red">NÃO DEFINIDO</span>';
         $port = $config['port'] ?? '<span style="color:red">NÃO DEFINIDO</span>';
         $encryption = $config['encryption'] ?? '<span style="color:red">NÃO DEFINIDO</span>';
         $username = $config['username'] ?? '<span style="color:red">NÃO DEFINIDO</span>';
+        // Mascara a senha
+        $passwordRaw = $config['password'] ?? '';
+        $senhaMascarada = substr($passwordRaw, 0, 4) . '...' . substr($passwordRaw, -4);
+        
         $fromAddress = $from['address'] ?? '<span style="color:red">NÃO DEFINIDO</span>';
         $fromName = $from['name'] ?? '<span style="color:red">NÃO DEFINIDO</span>';
 
-        $info = "
-        <h1>Diagnóstico de E-mail</h1>
-        <h3>Configuração Carregada pelo Laravel:</h3>
+        $info .= "
+        <h3>Configuração Ativa:</h3>
         <ul>
             <li><strong>Host:</strong> {$host}</li>
-            <li><strong>Porta:</strong> {$port}</li>
-            <li><strong>Criptografia:</strong> {$encryption}</li>
+            <li><strong>Porta:</strong> {$port} <small>(Recomendado: 2525 para Resend no Railway)</small></li>
+            <li><strong>Criptografia:</strong> {$encryption} <small>(Deve ser 'tls' para porta 2525)</small></li>
             <li><strong>Usuário:</strong> {$username}</li>
             <li><strong>Senha:</strong> {$senhaMascarada}</li>
-            <li><strong>From Address:</strong> {$fromAddress}</li>
-            <li><strong>From Name:</strong> {$fromName}</li>
+            <li><strong>From:</strong> {$fromAddress} ({$fromName})</li>
         </ul>
         <hr>
-        <h3>Tentando enviar e-mail de teste...</h3>
+        <h3>Tentando enviar e-mail... (Aguarde até 60s)</h3>
         ";
 
-        // Tenta enviar
-        Mail::raw('Teste de envio Railway (Diagnóstico) 🚀', function ($msg) use ($fromAddress, $fromName) {
-            $msg->to('seu.email.pessoal@gmail.com') // <--- O E-mail vai para aqui
+        // 3. Teste de Envio
+        Mail::raw('Teste de envio Railway com Timeout Aumentado 🚀', function ($msg) use ($fromAddress, $fromName) {
+            $msg->to('seu.email.pessoal@gmail.com') // <--- SEU EMAIL AQUI
                 ->subject('Teste de Conexão - Projeto Ellas');
             
+            // Garante que o remetente está definido para evitar erro de Sender
             if ($fromAddress && $fromAddress !== '<span style="color:red">NÃO DEFINIDO</span>') {
                 $msg->from($fromAddress, $fromName);
             }
         });
 
-        return $info . "<h2 style='color:green'>SUCESSO! Conexão estabelecida e e-mail enviado.</h2>";
+        return $info . "<h2 style='color:green'>SUCESSO! E-mail enviado. Verifique sua caixa de entrada.</h2>";
 
-    } catch (\Exception $e) {
-        return $info . "<h2 style='color:red'>FALHA:</h2><pre>" . $e->getMessage() . "</pre>";
+    } catch (\Throwable $e) { // Captura erros fatais e Exceptions
+        return $info . "<h2 style='color:red'>FALHA:</h2>
+        <p><strong>Erro:</strong> " . $e->getMessage() . "</p>
+        <p><strong>Arquivo:</strong> " . $e->getFile() . " (Linha " . $e->getLine() . ")</p>
+        <pre style='background:#eee;padding:10px;'>" . $e->getTraceAsString() . "</pre>";
     }
 });
 
