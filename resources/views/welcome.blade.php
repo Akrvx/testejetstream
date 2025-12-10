@@ -66,13 +66,13 @@
 
         <section id="inicio" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
             <div class="absolute inset-0 z-0">
-                <img src="{{ asset('IMG/inicio.jpg') }}" alt="Fundo" class="w-full h-full object-cover opacity-40">
+                <img src="{{ asset('img/inicio.jpg') }}" alt="Fundo" class="w-full h-full object-cover opacity-40">
                 <div class="absolute inset-0 bg-gradient-to-b from-ellas-dark/80 via-ellas-dark/60 to-ellas-dark"></div>
             </div>
 
             <div class="relative z-10 max-w-7xl mx-auto px-6 text-center lg:text-left grid lg:grid-cols-2 gap-12 items-center">
                 <div class="space-y-8 animate__animated animate__fadeInLeft">
-                    <img src="{{ asset('IMG/2.png') }}" alt="Logo Ellas" class="h-24 md:h-32 mx-auto lg:mx-0 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                    <img src="{{ asset('img/2.png') }}" alt="Logo Ellas" class="h-24 md:h-32 mx-auto lg:mx-0 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
                     
                     <h1 class="font-orbitron text-4xl md:text-6xl font-bold leading-tight">
                         Empoderando mulheres na <span class="text-transparent bg-clip-text bg-gradient-to-r from-ellas-pink to-ellas-cyan">tecnologia</span>
@@ -162,7 +162,7 @@
             <div class="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-12">
                 <div class="lg:w-1/2 relative">
                     <div class="absolute inset-0 bg-ellas-gradient rounded-3xl blur opacity-30 transform rotate-3"></div>
-                    <img src="{{ asset('IMG/Desenvolver.jpg') }}" alt="Nossa História" class="relative rounded-3xl shadow-2xl border border-white/10 w-full object-cover h-[400px]">
+                    <img src="{{ asset('img/Desenvolver.jpg') }}" alt="Nossa História" class="relative rounded-3xl shadow-2xl border border-white/10 w-full object-cover h-[400px]">
                 </div>
                 <div class="lg:w-1/2 space-y-6">
                     <h5 class="font-orbitron text-ellas-pink tracking-widest uppercase text-sm">Sobre Nós</h5>
@@ -293,7 +293,7 @@
 
         <section class="py-20 relative">
             <div class="absolute inset-0 bg-ellas-dark">
-                <img src="{{ asset('IMG/Página principal.jpg') }}" class="w-full h-full object-cover opacity-20" alt="CTA BG">
+                <img src="{{ asset('img/Página principal.jpg') }}" class="w-full h-full object-cover opacity-20" alt="CTA BG">
                 <div class="absolute inset-0 bg-gradient-to-t from-ellas-dark via-transparent to-ellas-dark"></div>
             </div>
             
@@ -311,7 +311,7 @@
         <footer class="bg-ellas-card border-t border-ellas-nav pt-16 pb-8">
             <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
                 <div class="text-center md:text-left">
-                    <img src="{{ asset('IMG/2.png') }}" alt="Logo" class="h-16 mx-auto md:mx-0 mb-4">
+                    <img src="{{ asset('img/2.png') }}" alt="Logo" class="h-16 mx-auto md:mx-0 mb-4">
                     <p class="font-biorhyme text-gray-400 text-sm max-w-xs">Juntas, transformamos o futuro da tecnologia!</p>
                 </div>
                 
