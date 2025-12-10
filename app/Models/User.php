@@ -75,4 +75,11 @@ class User extends Authenticatable implements MustVerifyEmail
             'solicitou_mentoria' => 'boolean', // Garante que venha como true/false
         ];
     }
+
+    // Relacionamento: Eventos onde o usuário está inscrito
+    public function eventosParticipando()
+    {
+        return $this->belongsToMany(Event::class, 'event_user');
+    }
+    
 }

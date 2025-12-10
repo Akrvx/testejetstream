@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     protected $fillable = [
-        'user_id', 'titulo', 'descricao', 'data_hora', 'local', 'limite_vagas'
+        'user_id', 'titulo', 'descricao', 'data_hora', 'local', 'limite_vagas','material_link','concluido'
     ];
 
     // O Laravel precisa saber que esse campo é data, para podermos formatar depois

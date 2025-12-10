@@ -4,7 +4,6 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <!-- AQUI ESTÁ A MUDANÇA: Link para url('/') em vez de dashboard -->
                     <a href="{{ url('/') }}" class="font-orbitron font-bold text-2xl tracking-wider hover:scale-105 transition-transform">
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-ellas-purple to-ellas-pink">Projeto ELLAS</span>
                     </a>
@@ -40,42 +39,15 @@
                 </div>
             </div>
 
-            <div class="hidden sm:flex sm:items-center sm:ml-6 gap-4">
+            <div class="hidden sm:flex sm:items-center sm:ml-6 gap-3"> <!-- Reduzi o gap para ficar mais compacto -->
                 
-                <!-- Dark Mode Toggle -->
-                <button 
-                    type="button" 
-                    x-data="{ 
-                        isDark: localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) 
-                    }"
-                    x-on:click="
-                        isDark = !isDark;
-                        if (isDark) {
-                            document.documentElement.classList.add('dark');
-                            localStorage.theme = 'dark';
-                        } else {
-                            document.documentElement.classList.remove('dark');
-                            localStorage.theme = 'light';
-                        }
-                    "
-                    class="p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:text-gray-400 dark:hover:bg-ellas-nav dark:hover:text-ellas-cyan transition-all duration-300 focus:outline-none"
-                    title="Alternar Tema"
-                >
-                    <svg x-show="!isDark" class="w-6 h-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                    <svg x-show="isDark" style="display: none;" class="w-6 h-6 text-ellas-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
-                </button>
-
-                <!-- Teams Dropdown (Visível apenas se NÃO for Aluna) -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->role != 'aluna')
-                    <div class="relative">
+                <!-- 1. Teams Dropdown (AGORA SÓ APARECE PARA ADMIN) -->
+                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->role === 'admin')
+                    <div class="relative mr-2">
                         <x-dropdown align="right" width="60">
                             <x-slot name="trigger">
                                 <span class="inline-flex rounded-md">
-                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-full text-slate-600 dark:text-white bg-transparent hover:bg-slate-100 dark:hover:bg-white/10 transition">
+                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-full text-slate-600 dark:text-white bg-gray-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition">
                                         {{ Auth::user()->currentTeam ? Auth::user()->currentTeam->name : 'Sem Time' }}
                                         <svg class="ml-2 -mr-0.5 h-4 w-4 text-ellas-purple dark:text-ellas-cyan" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
@@ -114,7 +86,34 @@
                     </div>
                 @endif
 
-                <!-- User Dropdown -->
+                <!-- 2. Dark Mode Toggle (Agora bem ao lado do perfil) -->
+                <button 
+                    type="button" 
+                    x-data="{ 
+                        isDark: localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) 
+                    }"
+                    x-on:click="
+                        isDark = !isDark;
+                        if (isDark) {
+                            document.documentElement.classList.add('dark');
+                            localStorage.theme = 'dark';
+                        } else {
+                            document.documentElement.classList.remove('dark');
+                            localStorage.theme = 'light';
+                        }
+                    "
+                    class="p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:text-gray-400 dark:hover:bg-ellas-nav dark:hover:text-ellas-cyan transition-all duration-300 focus:outline-none"
+                    title="Alternar Tema"
+                >
+                    <svg x-show="!isDark" class="w-6 h-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg x-show="isDark" style="display: none;" class="w-6 h-6 text-ellas-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+
+                <!-- 3. User Dropdown -->
                 <div class="relative">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
@@ -143,7 +142,6 @@
                                     {{ __('Perfil') }}
                                 </x-dropdown-link>
                                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                                    <!-- Feature API escondida conforme pedido anterior, mas mantida no código caso reative no config -->
                                     <x-dropdown-link href="{{ route('api-tokens.index') }}" class="text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-ellas-nav">
                                         {{ __('API Tokens') }}
                                     </x-dropdown-link>
@@ -175,6 +173,7 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-white dark:bg-ellas-card border-t border-gray-200 dark:border-ellas-nav">
+        <!-- ... (mantive o menu mobile igual) ... -->
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')" class="text-slate-600 dark:text-white hover:text-ellas-purple dark:hover:text-ellas-cyan">
                 {{ __('Dashboard') }}

@@ -12,7 +12,9 @@ use App\Livewire\CriarHistoria;
 use App\Livewire\Blog;
 use App\Livewire\LerHistoria;
 use App\Livewire\AprovarMentoras;
-use App\Livewire\GerenciarDepoimentos; // Importação
+use App\Livewire\GerenciarDepoimentos;
+use App\Livewire\MinhaAgenda;
+use App\Livewire\GerenciarAulas; // <--- Importação Nova
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\AdminLoginController;
@@ -24,11 +26,10 @@ use App\Models\Testimonial;
 
 /*
 |--------------------------------------------------------------------------
-| Rotas Públicas (Site Institucional Multi-páginas)
+| Rotas Públicas (Site Institucional)
 |--------------------------------------------------------------------------
 */
 
-// Página Inicial com Dados Reais
 Route::get('/', function () {
     return view('pages.home', [
         'totalUsers' => User::count(),
@@ -38,19 +39,15 @@ Route::get('/', function () {
     ]); 
 })->name('home');
 
-// Página Sobre
 Route::get('/sobre', function () {
     return view('pages.about');
 })->name('site.about');
 
-// Página de Serviços
 Route::get('/servicos', function () {
     return view('pages.services');
 })->name('site.services');
 
-// Página de Depoimentos (Pública)
 Route::get('/depoimentos', function () {
-    // Também precisa enviar os depoimentos para esta página
     return view('pages.testimonials', [
         'testimonials' => Testimonial::where('is_active', true)->latest()->get()
     ]);
@@ -59,20 +56,13 @@ Route::get('/depoimentos', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Rotas de Administração (Controllers Customizados)
+| Rotas de Acesso Administrativo (Portal Secreto)
 |--------------------------------------------------------------------------
 */
-// Login admin
 Route::get('/portal', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/portal', [AdminLoginController::class, 'login'])->name('admin.login.submit');
 Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
-// Dashboard admin protegido (Middleware customizado)
-//Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
-    //Route::get('/', function () {
-       // return view('admin.dashboard'); 
-    //})->name('dashboard');
-//});
 
 /*
 |--------------------------------------------------------------------------
@@ -85,7 +75,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    // Lógica do "Semáforo" de Dashboards
+    // 1. Dashboard Inteligente ("Semáforo")
     Route::get('/dashboard', function () {
         $role = Auth::user()->role;
 
@@ -97,31 +87,32 @@ Route::middleware([
             return view('dashboards.mentora');
         }
 
-        // Padrão para Aluna
         return view('dashboards.aluna');
     })->name('dashboard');
 
-    // Perfil
+    // 2. Funcionalidades Gerais
     Route::get('/completar-perfil', CompletarPerfil::class)->name('completar-perfil');
 
-    // Mentoras
+    // Módulo de Mentorias
     Route::get('/mentoras', GaleriaMentoras::class)->name('mentoras.index');
     Route::get('/mentoras/{id}', VerMentora::class)->name('mentoras.show');
-
-    // Solicitações e Pedidos
     Route::get('/minhas-solicitacoes', MinhasSolicitacoes::class)->name('solicitacoes.index');
     Route::get('/meus-pedidos', MinhasCandidaturas::class)->name('candidaturas.index');
 
-    // Eventos
+    // Módulo de Eventos e Aulas
     Route::get('/eventos', ListaEventos::class)->name('eventos.index');
     Route::get('/eventos/criar', CriarEvento::class)->name('eventos.criar');
+    Route::get('/minha-agenda', MinhaAgenda::class)->name('agenda.index');
+    
+    // --- NOVA ROTA PARA MENTORAS GERENCIAREM AULAS ---
+    Route::get('/minhas-aulas', GerenciarAulas::class)->name('aulas.index');
 
-    // Blog
+    // Módulo de Blog
     Route::get('/blog', Blog::class)->name('blog.index');
     Route::get('/blog/escrever', CriarHistoria::class)->name('blog.criar');
     Route::get('/blog/{id}', LerHistoria::class)->name('blog.show');
 
-    // --- ÁREA DE ADMINISTRAÇÃO (Livewire) ---
+    // 3. Área Administrativa (Protegida)
     Route::get('/admin/aprovar-mentoras', AprovarMentoras::class)->name('admin.aprovar');
     Route::get('/admin/depoimentos', GerenciarDepoimentos::class)->name('admin.depoimentos');
 
