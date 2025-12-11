@@ -3,11 +3,12 @@
         <div class="flex justify-between h-20">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ url('/') }}" class="font-orbitron font-bold text-2xl tracking-wider hover:scale-105 transition-transform">
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-ellas-purple to-ellas-pink">Projeto ELLAS</span>
-                    </a>
-                </div>
+            <div class="shrink-0 flex items-center">
+                <a href="{{ url('/') }}" class="flex items-center gap-3 font-orbitron font-bold text-2xl tracking-wider hover:scale-105 transition-transform">
+                <img src="{{ asset('img/3.png') }}" alt="Logo Projeto ELLAS" class="h-12 w-auto" />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-ellas-purple to-ellas-pink">Projeto ELLAS</span>
+                </a>
+            </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
