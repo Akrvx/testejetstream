@@ -79,6 +79,7 @@ class User extends Authenticatable
     // --- RELACIONAMENTOS ---
 
     // Recupera os eventos em que a usuária se inscreveu
+    // É ESSA FUNÇÃO QUE O ERRO DIZ QUE ESTÁ FALTANDO
     public function eventosParticipando()
     {
         return $this->belongsToMany(Event::class, 'event_user')->withTimestamps();
