@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\Auth\MustVerifyEmail; // <--- Desativado para parar o envio de e-mail
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,7 +11,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use HasApiTokens;
 
@@ -32,13 +32,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         // Campos personalizados do Projeto ELLAS:
-        'role',                // 'admin', 'mentora', 'aluna'
-        'bio',                 // Biografia
-        'area_atuacao',        // Ex: Backend, Design
-        'linkedin_url',        // Link do perfil profissional
-        'solicitou_mentoria',  // Controle para o Admin saber quem quer ser mentora
+        'role',                
+        'bio',                 
+        'area_atuacao',        
+        'linkedin_url',        
         'github_url',
         'nivel_experiencia',
+        'solicitou_mentoria',  
     ];
 
     /**
@@ -72,14 +72,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'solicitou_mentoria' => 'boolean', // Garante que venha como true/false
+            'solicitou_mentoria' => 'boolean',
         ];
     }
-
-    // Relacionamento: Eventos onde o usuário está inscrito
-    public function eventosParticipando()
-    {
-        return $this->belongsToMany(Event::class, 'event_user');
-    }
-    
 }

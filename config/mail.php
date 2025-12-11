@@ -41,7 +41,7 @@ return [
             'transport' => 'postmark',
         ],
 
-        'resend' => [ // Adicionando suporte futuro para driver API
+        'resend' => [
             'transport' => 'resend',
         ],
 
