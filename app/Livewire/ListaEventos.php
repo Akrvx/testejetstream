@@ -12,34 +12,28 @@ class ListaEventos extends Component
     {
         $evento = Event::find($eventId);
 
-        // Validações
         if (!$evento) return;
         if ($evento->estaLotado()) return;
 
-        // attach = Adiciona na tabela pivô (Inscreve)
-        // O segundo parametro (array vazio) é necessário em algumas versões, mas aqui o simples funciona
+        // Adiciona o usuário na lista de participantes
         $evento->participantes()->attach(Auth::id());
         
-        // Dispara um evento pro navegador saber que atualizou (opcional, mas bom pra UI)
-        session()->flash('success', 'Inscrição confirmada!');
+        session()->flash('success', 'Inscrição confirmada! O evento agora aparecerá em "Meus Cursos".');
     }
 
     public function sair($eventId)
     {
         $evento = Event::find($eventId);
         if ($evento) {
-            // detach = Remove da tabela pivô (Desinscreve)
             $evento->participantes()->detach(Auth::id());
         }
     }
 
     public function render()
     {
-        // Traz os eventos ordenados pela data
-        // Traz também a relação 'participantes' para sabermos se EU estou lá
+        // ATENÇÃO: Removi o filtro "where data_hora >= now()" para você ver tudo
         $eventos = Event::with('participantes')
-            ->where('data_hora', '>=', now()) // Só eventos futuros
-            ->orderBy('data_hora', 'asc')
+            ->orderBy('data_hora', 'desc') // Mostra os eventos mais novos primeiro
             ->get();
 
         return view('livewire.lista-eventos', ['eventos' => $eventos])
