@@ -21,9 +21,8 @@
             </button>
         </form>
 
-        <div class="flex justify-between w-full mt-4">
+        <div class="flex justify-center w-full mt-4">
             <a href="{{ route('profile.show') }}" class="underline text-sm text-gray-400 hover:text-ellas-purple font-orbitron">
-                {{ __('Editar Perfil') }}
             </a>
 
             <form method="POST" action="{{ route('logout') }}" class="inline">

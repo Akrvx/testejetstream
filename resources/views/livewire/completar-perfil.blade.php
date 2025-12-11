@@ -100,6 +100,13 @@
                     </button>
                 </div>
 
+                 <div class="flex items-center justify-end">
+    <a href="{{ route('dashboard') }}" 
+       class="bg-blue-500 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition inline-block text-center">
+        Voltar à página inicial
+    </a>
+</div>
+
           
 
             </form>

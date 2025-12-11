@@ -1,3 +1,4 @@
+
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         
@@ -10,6 +11,14 @@
                 </a>
             @endif
         </div>
+
+
+          <div class="flex items-center justify-end">
+    <a href="{{ route('dashboard') }}" 
+       class="bg-blue-500 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition inline-block text-center">
+        Voltar à página inicial
+    </a>
+</div>
 
         @if(session('success'))
             <div class="bg-green-100 dark:bg-green-900 border border-green-200 dark:border-green-700 text-green-700 dark:text-green-300 p-4 rounded mb-4">

@@ -12,6 +12,8 @@
             @endif
         </div>
 
+        
+
         <!-- BARRA DE FILTROS -->
         <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm mb-8 border border-gray-100 dark:border-gray-700 transition duration-300">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -95,6 +97,9 @@
                         {{ $mentora->bio }}
                     </p>
 
+
+
+                    
                     <a href="{{ route('mentoras.show', $mentora->id) }}" class="block text-center w-full bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded transition mt-auto shadow-md hover:shadow-lg">
                         Ver Perfil Completo
                     </a>
@@ -112,7 +117,15 @@
                     Limpar todos os filtros
                 </button>
             </div>
+            
             @endforelse
+ <div class="flex items-center justify-end">
+    <a href="{{ route('dashboard') }}" 
+       class="bg-blue-500 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition inline-block text-center">
+        Voltar à página inicial
+    </a>
+</div>
+
 
         </div>
     </div>

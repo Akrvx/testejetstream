@@ -15,6 +15,13 @@
             @endif
         </div>
 
+          <div class="flex items-center justify-end">
+    <a href="{{ route('dashboard') }}" 
+       class="bg-blue-500 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition inline-block text-center">
+        Voltar à página inicial
+    </a>
+</div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach($historias as $historia)
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col h-full hover:shadow-xl transition duration-300">
