@@ -8,6 +8,38 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
+            <!-- DESTAQUE: Próxima Aula (Lógica Direta na View) -->
+            @php
+                $proximaAula = Auth::user()->eventosParticipando()
+                    ->where('data_hora', '>=', now())
+                    ->orderBy('data_hora', 'asc')
+                    ->first();
+            @endphp
+
+            @if($proximaAula)
+                <div class="mb-8 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-6 text-white shadow-lg relative overflow-hidden group transition duration-300 hover:shadow-xl">
+                    <!-- Efeito de fundo -->
+                    <div class="absolute right-0 top-0 h-full w-1/3 bg-white/10 skew-x-12 translate-x-12"></div>
+                    
+                    <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div>
+                            <div class="text-indigo-200 text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-2">
+                                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                                Próxima Aula • {{ $proximaAula->data_hora->format('d/m \à\s H:i') }}
+                            </div>
+                            <h2 class="text-2xl font-bold mb-1">{{ $proximaAula->titulo }}</h2>
+                            <p class="text-indigo-100 text-sm truncate max-w-xl">{{ $proximaAula->local ?? 'Local: Online' }}</p>
+                        </div>
+                        
+                        <a href="{{ $proximaAula->local && filter_var($proximaAula->local, FILTER_VALIDATE_URL) ? $proximaAula->local : route('meus.cursos') }}" 
+                           target="{{ $proximaAula->local && filter_var($proximaAula->local, FILTER_VALIDATE_URL) ? '_blank' : '_self' }}"
+                           class="bg-white text-indigo-600 px-6 py-2 rounded-full font-bold shadow hover:bg-indigo-50 transition transform group-hover:scale-105 whitespace-nowrap">
+                            {{ $proximaAula->local && filter_var($proximaAula->local, FILTER_VALIDATE_URL) ? 'Entrar na Sala' : 'Ver Detalhes' }}
+                        </a>
+                    </div>
+                </div>
+            @endif
+
             <!-- Bloco Principal -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6 mb-8 transition duration-300">
                 <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">
@@ -59,7 +91,7 @@
                 </div>
             </div>
 
-            <!-- NOVA SEÇÃO: Minhas Mentoras Ativas -->
+            <!-- Minhas Mentoras Ativas -->
             @php
                 $mentoriasAtivas = \App\Models\Solicitacao::with('mentora')
                     ->where('aluna_id', Auth::id())

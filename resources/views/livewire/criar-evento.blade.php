@@ -12,27 +12,38 @@
                         @error('titulo') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
 
-                    <div class="mb-4">
-                        <label class="block font-bold mb-2 text-gray-700 dark:text-gray-300">Data e Hora</label>
-                        <input type="datetime-local" wire:model="data_hora" class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 rounded p-2 focus:ring-indigo-500 focus:border-indigo-500">
-                        @error('data_hora') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    <!-- Datas na mesma linha para melhor visualização -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="mb-4">
+                            <label class="block font-bold mb-2 text-gray-700 dark:text-gray-300">Início</label>
+                            <input type="datetime-local" wire:model="data_hora" class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 rounded p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            @error('data_hora') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label class="block font-bold mb-2 text-gray-700 dark:text-gray-300">Término</label>
+                            <input type="datetime-local" wire:model="data_fim" class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 rounded p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            @error('data_fim') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
                     </div>
                 </div>
 
                 <div class="mb-4">
                     <label class="block font-bold mb-2 text-gray-700 dark:text-gray-300">Descrição</label>
                     <textarea wire:model="descricao" rows="3" class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 rounded p-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                    @error('descricao') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="mb-4">
                         <label class="block font-bold mb-2 text-gray-700 dark:text-gray-300">Local / Link</label>
                         <input type="text" wire:model="local" placeholder="Ex: Google Meet" class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 rounded p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        @error('local') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="mb-4">
                         <label class="block font-bold mb-2 text-gray-700 dark:text-gray-300">Limite de Vagas (0 = Ilimitado)</label>
                         <input type="number" wire:model="limite_vagas" class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 rounded p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        @error('limite_vagas') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
