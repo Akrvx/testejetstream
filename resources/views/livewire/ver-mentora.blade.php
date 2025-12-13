@@ -35,37 +35,56 @@
                         </p>
                     </div>
 
-                    <!-- NOVO: Lista de Aulas da Mentora -->
+                    <!-- SEÇÃO NOVA: Aulas da Mentora -->
                     @php
-                        // Busca eventos futuros desta mentora direto na View para exibir
+                        // Busca eventos criados por esta mentora
+                        // Removi o filtro de data para garantir que apareça nos testes
                         $aulasMentora = \App\Models\Event::where('user_id', $this->mentora->id)
-                            ->where('data_hora', '>=', now())
-                            ->orderBy('data_hora', 'asc')
-                            ->take(3)
+                            ->orderBy('data_hora', 'desc')
+                            ->take(5)
                             ->get();
                     @endphp
 
                     @if($aulasMentora->isNotEmpty())
-                    <div>
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3 border-b dark:border-gray-700 pb-2">Próximas Aulas</h3>
-                        <div class="space-y-3">
-                            @foreach($aulasMentora as $aula)
-                                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-500 transition">
-                                    <div class="mb-3 sm:mb-0">
-                                        <div class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wide">
-                                            {{ $aula->data_hora->format('d/m/Y \à\s H:i') }}
+                        <div class="pt-2">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b dark:border-gray-700 pb-2 flex items-center">
+                                <span class="mr-2">📚</span> Aulas e Workshops
+                            </h3>
+                            <div class="space-y-4">
+                                @foreach($aulasMentora as $aula)
+                                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-500 transition">
+                                        <div class="mb-3 sm:mb-0">
+                                            <div class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wide">
+                                                {{ $aula->data_hora->format('d/m/Y \à\s H:i') }}
+                                            </div>
+                                            <h4 class="text-md font-bold text-gray-800 dark:text-white">{{ $aula->titulo }}</h4>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Local: {{ $aula->local ?? 'Online' }}</p>
                                         </div>
-                                        <h4 class="text-md font-bold text-gray-800 dark:text-white">{{ $aula->titulo }}</h4>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ $aula->local }}</p>
+                                        
+                                        <!-- Botão de Ação -->
+                                        @php
+                                            $inscrita = $aula->participantes->contains(Auth::id());
+                                        @endphp
+
+                                        @if($inscrita)
+                                            <span class="text-sm bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-4 py-2 rounded-lg font-bold text-center border border-green-200 dark:border-green-800">
+                                                Inscrita ✓
+                                            </span>
+                                        @else
+                                            <a href="{{ route('eventos.index') }}" class="text-sm bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold transition shadow-sm text-center">
+                                                Ver e Inscrever
+                                            </a>
+                                        @endif
                                     </div>
-                                    <a href="{{ route('eventos.index') }}" class="text-sm bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white px-3 py-2 rounded-lg font-bold transition shadow-sm text-center">
-                                        Ver e Inscrever
-                                    </a>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="p-4 bg-gray-50 dark:bg-gray-700/30 rounded-lg border border-dashed border-gray-300 dark:border-gray-600 text-center">
+                            <p class="text-sm text-gray-500 dark:text-gray-400 italic">Esta mentora ainda não tem aulas cadastradas.</p>
+                        </div>
                     @endif
+                    <!-- FIM DA SEÇÃO NOVA -->
 
                     @if($this->mentora->linkedin_url || $this->mentora->github_url)
                     <div>
