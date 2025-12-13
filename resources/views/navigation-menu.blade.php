@@ -1,23 +1,25 @@
 <nav x-data="{ open: false }" class="sticky top-0 z-50 bg-white/90 dark:bg-ellas-card/90 backdrop-blur-md border-b border-gray-200 dark:border-ellas-nav shadow-sm dark:shadow-lg dark:shadow-black/50 transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-20">
+            
+            <!-- LADO ESQUERDO: Logo + Links -->
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ url('/') }}" class="flex items-center gap-3 font-orbitron font-bold text-2xl tracking-wider hover:scale-105 transition-transform">
-                        <img src="{{ asset('img/3.png') }}" alt="Logo Projeto ELLAS" class="h-12 w-auto" />
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-ellas-purple to-ellas-pink">Projeto ELLAS</span>
+                    <a href="{{ url('/') }}" class="flex items-center gap-2 font-orbitron font-bold text-xl tracking-wider hover:scale-105 transition-transform">
+                        <img src="{{ asset('img/3.png') }}" alt="Logo" class="h-10 w-auto" />
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-ellas-purple to-ellas-pink hidden lg:block">ELLAS</span>
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <!-- Navigation Links (Ajuste de espaço: space-x-4 em telas menores) -->
+                <div class="hidden space-x-4 lg:space-x-6 xl:space-x-8 sm:-my-px sm:ml-6 sm:flex">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')" class="font-orbitron text-slate-600 dark:text-white hover:text-ellas-purple dark:hover:text-ellas-cyan">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     
                     <x-nav-link href="{{ route('completar-perfil') }}" :active="request()->routeIs('completar-perfil')" class="font-orbitron text-slate-600 dark:text-white hover:text-ellas-purple dark:hover:text-ellas-cyan">
-                        {{ __('Meu Perfil') }}
+                        {{ __('Perfil') }}
                     </x-nav-link>
 
                     <x-nav-link href="{{ route('blog.index') }}" :active="request()->routeIs('blog.*')" class="font-orbitron text-slate-600 dark:text-white hover:text-ellas-purple dark:hover:text-ellas-cyan">
@@ -28,13 +30,12 @@
                         {{ __('Eventos') }}
                     </x-nav-link>
 
-                    <!-- Links da Agenda -->
                     <x-nav-link href="{{ route('agenda.index') }}" :active="request()->routeIs('agenda.index')" class="font-orbitron text-slate-600 dark:text-white hover:text-ellas-purple dark:hover:text-ellas-cyan">
                         {{ __('Agenda') }}
                     </x-nav-link>
 
                     <x-nav-link href="{{ route('meus.cursos') }}" :active="request()->routeIs('meus.cursos')" class="font-orbitron text-slate-600 dark:text-white hover:text-ellas-purple dark:hover:text-ellas-cyan">
-                        {{ __('Meus Cursos') }}
+                        {{ __('Cursos') }}
                     </x-nav-link>
 
                     <x-nav-link href="{{ route('candidaturas.index') }}" :active="request()->routeIs('candidaturas.index')" class="font-orbitron text-slate-600 dark:text-white hover:text-ellas-purple dark:hover:text-ellas-cyan">
@@ -49,23 +50,23 @@
                 </div>
             </div>
 
-            <div class="hidden sm:flex sm:items-center sm:ml-6 gap-3">
+            <!-- LADO DIREITO: Configurações -->
+            <div class="hidden sm:flex sm:items-center sm:ml-6 gap-2">
                 
                 <!-- 1. Teams Dropdown (SÓ PARA ADMIN) -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->role === 'admin')
-                    <div class="relative mr-2">
+                    <div class="relative">
                         <x-dropdown align="right" width="60">
                             <x-slot name="trigger">
                                 <span class="inline-flex rounded-md">
                                     <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-full text-slate-600 dark:text-white bg-gray-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition">
-                                        {{ Auth::user()->currentTeam ? Auth::user()->currentTeam->name : 'Sem Time' }}
+                                        <span class="hidden lg:inline">{{ Auth::user()->currentTeam ? Auth::user()->currentTeam->name : 'Time' }}</span>
                                         <svg class="ml-2 -mr-0.5 h-4 w-4 text-ellas-purple dark:text-ellas-cyan" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                                         </svg>
                                     </button>
                                 </span>
                             </x-slot>
-
                             <x-slot name="content">
                                 <div class="w-60 bg-white dark:bg-ellas-card border border-gray-100 dark:border-ellas-nav rounded-md">
                                     <div class="block px-4 py-2 text-xs text-gray-400 font-orbitron">
@@ -96,19 +97,47 @@
                     </div>
                 @endif
 
-                <!-- 2. User Dropdown (AGORA NO MEIO) -->
+                <!-- 2. Dark Mode Toggle (NO MEIO) -->
+                <button 
+                    type="button" 
+                    x-data="{ 
+                        isDark: localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) 
+                    }"
+                    x-on:click="
+                        isDark = !isDark;
+                        if (isDark) {
+                            document.documentElement.classList.add('dark');
+                            localStorage.theme = 'dark';
+                        } else {
+                            document.documentElement.classList.remove('dark');
+                            localStorage.theme = 'light';
+                        }
+                    "
+                    class="p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:text-gray-400 dark:hover:bg-ellas-nav dark:hover:text-ellas-cyan transition-all duration-300 focus:outline-none mx-1"
+                    title="Alternar Tema"
+                >
+                    <svg x-show="!isDark" class="w-5 h-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg x-show="isDark" style="display: none;" class="w-5 h-5 text-ellas-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+
+                <!-- 3. User Dropdown (NA DIREITA EXTREMA) -->
                 <div class="relative">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                 <button class="flex text-sm border-2 border-ellas-purple rounded-full focus:outline-none focus:border-ellas-cyan transition shadow-sm hover:shadow-md">
-                                    <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                    <img class="h-9 w-9 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">
                                     <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-full text-slate-600 dark:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition">
-                                        {{ Auth::user()->name }}
-                                        <svg class="ml-2 -mr-0.5 h-4 w-4 text-ellas-purple dark:text-ellas-cyan" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <!-- Esconde o nome em telas médias para economizar espaço -->
+                                        <span class="hidden lg:inline mr-1">{{ Auth::user()->name }}</span>
+                                        <svg class="h-4 w-4 text-ellas-purple dark:text-ellas-cyan" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                         </svg>
                                     </button>
@@ -140,34 +169,6 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
-
-                <!-- 3. Dark Mode Toggle (AGORA NA DIREITA EXTREMA) -->
-                <button 
-                    type="button" 
-                    x-data="{ 
-                        isDark: localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) 
-                    }"
-                    x-on:click="
-                        isDark = !isDark;
-                        if (isDark) {
-                            document.documentElement.classList.add('dark');
-                            localStorage.theme = 'dark';
-                        } else {
-                            document.documentElement.classList.remove('dark');
-                            localStorage.theme = 'light';
-                        }
-                    "
-                    class="p-2 ml-2 rounded-full text-slate-500 hover:bg-slate-100 dark:text-gray-400 dark:hover:bg-ellas-nav dark:hover:text-ellas-cyan transition-all duration-300 focus:outline-none"
-                    title="Alternar Tema"
-                >
-                    <svg x-show="!isDark" class="w-6 h-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                    <svg x-show="isDark" style="display: none;" class="w-6 h-6 text-ellas-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
-                </button>
-
             </div>
 
             <!-- Hamburger (Mobile) -->
@@ -184,13 +185,15 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-white dark:bg-ellas-card border-t border-gray-200 dark:border-ellas-nav">
-        <!-- Mantive o menu mobile igual, pois o botão já estava na posição correta (direita da foto) -->
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')" class="text-slate-600 dark:text-white hover:text-ellas-purple dark:hover:text-ellas-cyan">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('completar-perfil') }}" :active="request()->routeIs('completar-perfil')" class="text-slate-600 dark:text-white">
                 {{ __('Meu Perfil') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('blog.index') }}" :active="request()->routeIs('blog.*')" class="text-slate-600 dark:text-white">
+                {{ __('Histórias') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('eventos.index') }}" :active="request()->routeIs('eventos.*')" class="text-slate-600 dark:text-white">
                 {{ __('Eventos') }}
@@ -201,12 +204,14 @@
             <x-responsive-nav-link href="{{ route('meus.cursos') }}" :active="request()->routeIs('meus.cursos')" class="text-slate-600 dark:text-white">
                 {{ __('Meus Cursos') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('blog.index') }}" :active="request()->routeIs('blog.*')" class="text-slate-600 dark:text-white">
-                {{ __('Histórias') }}
-            </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('candidaturas.index') }}" :active="request()->routeIs('candidaturas.index')" class="text-slate-600 dark:text-white">
                 {{ __('Inscrições') }}
             </x-responsive-nav-link>
+            @if(Auth::user()->role === 'mentora' || Auth::user()->role === 'admin')
+                <x-responsive-nav-link href="{{ route('solicitacoes.index') }}" :active="request()->routeIs('solicitacoes.index')" class="text-ellas-pink font-bold">
+                    {{ __('Gestão') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-ellas-nav bg-gray-50 dark:bg-ellas-dark">
