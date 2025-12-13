@@ -35,6 +35,38 @@
                         </p>
                     </div>
 
+                    <!-- NOVO: Lista de Aulas da Mentora -->
+                    @php
+                        // Busca eventos futuros desta mentora direto na View para exibir
+                        $aulasMentora = \App\Models\Event::where('user_id', $this->mentora->id)
+                            ->where('data_hora', '>=', now())
+                            ->orderBy('data_hora', 'asc')
+                            ->take(3)
+                            ->get();
+                    @endphp
+
+                    @if($aulasMentora->isNotEmpty())
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3 border-b dark:border-gray-700 pb-2">Próximas Aulas</h3>
+                        <div class="space-y-3">
+                            @foreach($aulasMentora as $aula)
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-500 transition">
+                                    <div class="mb-3 sm:mb-0">
+                                        <div class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wide">
+                                            {{ $aula->data_hora->format('d/m/Y \à\s H:i') }}
+                                        </div>
+                                        <h4 class="text-md font-bold text-gray-800 dark:text-white">{{ $aula->titulo }}</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ $aula->local }}</p>
+                                    </div>
+                                    <a href="{{ route('eventos.index') }}" class="text-sm bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white px-3 py-2 rounded-lg font-bold transition shadow-sm text-center">
+                                        Ver e Inscrever
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+
                     @if($this->mentora->linkedin_url || $this->mentora->github_url)
                     <div>
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3 border-b dark:border-gray-700 pb-2">Conecte-se</h3>
