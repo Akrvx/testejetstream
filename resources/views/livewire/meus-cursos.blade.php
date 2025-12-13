@@ -19,20 +19,32 @@
             <!-- 1. PRÓXIMAS AULAS -->
             @if($proximasAulas->isNotEmpty())
                 <h3 class="text-xl font-bold text-indigo-600 dark:text-indigo-400 mb-4 flex items-center">
-                    <span class="mr-2">📅</span> Próximas Aulas
+                    <span class="mr-2">📅</span> Próximas Aulas / Em Andamento
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                     @foreach($proximasAulas as $curso)
                         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 flex flex-col h-full hover:border-indigo-300 dark:hover:border-indigo-700 transition">
-                            <!-- Topo Colorido (Futuro) -->
+                            
+                            <!-- Topo Colorido -->
                             <div class="h-2 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
 
                             <div class="p-6 flex-1 flex flex-col">
                                 <div class="flex justify-between items-start mb-4">
-                                    <span class="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                                        {{ $curso->data_hora->format('d/m/Y') }}
-                                    </span>
-                                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-bold">Em breve</span>
+                                    <div class="flex flex-col">
+                                        <span class="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                                            {{ $curso->data_hora->format('d/m/Y') }}
+                                        </span>
+                                        <span class="text-xs text-indigo-500 font-bold">
+                                            {{ $curso->data_hora->format('H:i') }} 
+                                            @if($curso->data_fim) - {{ $curso->data_fim->format('H:i') }} @endif
+                                        </span>
+                                    </div>
+
+                                    @if($curso->data_hora <= now())
+                                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-bold animate-pulse">Ao Vivo</span>
+                                    @else
+                                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-bold">Em breve</span>
+                                    @endif
                                 </div>
 
                                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ $curso->titulo }}</h3>
@@ -46,11 +58,19 @@
                                         </a>
                                     @endif
 
-                                    <!-- Material -->
+                                    <!-- Botão de Material (Usa função do Livewire para evitar erro 403) -->
                                     @if($curso->material_link)
-                                        <a href="{{ $curso->material_link }}" target="_blank" class="flex items-center justify-center w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold transition shadow-md">
+                                        <button 
+                                            wire:click="baixarMaterial({{ $curso->id }})"
+                                            class="flex items-center justify-center w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold transition shadow-md"
+                                        >
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                                             Baixar Material
-                                        </a>
+                                        </button>
+                                    @else
+                                        <button disabled class="w-full py-2 px-4 bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 rounded-lg font-bold cursor-not-allowed text-sm">
+                                            Aguardando material
+                                        </button>
                                     @endif
                                 </div>
                             </div>
@@ -82,9 +102,12 @@
                                 <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 line-clamp-3">{{ $curso->descricao }}</p>
 
                                 <div class="mt-auto space-y-3">
-                                    <!-- Material (Foco Principal no Histórico) -->
+                                    <!-- Botão de Material -->
                                     @if($curso->material_link)
-                                        <a href="{{ $curso->material_link }}" target="_blank" class="flex items-center justify-center w-full py-2 px-4 bg-gray-600 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white rounded-lg font-bold transition shadow-md">
+                                        <button 
+                                            wire:click="baixarMaterial({{ $curso->id }})"
+                                            class="flex items-center justify-center w-full py-2 px-4 bg-gray-600 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white rounded-lg font-bold transition shadow-md"
+                                        >
                                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                                             Acessar Material
                                         </a>
@@ -92,7 +115,7 @@
                                         <div class="text-center text-xs text-gray-400 italic py-2">Sem material disponível</div>
                                     @endif
                                     
-                                    <!-- Link da gravação se disponível no campo local -->
+                                    <!-- Link da gravação (se estiver no campo local) -->
                                     @if($curso->local && filter_var($curso->local, FILTER_VALIDATE_URL))
                                          <a href="{{ $curso->local }}" target="_blank" class="text-xs text-center block text-indigo-500 hover:underline">Ver Link/Gravação</a>
                                     @endif
