@@ -22,7 +22,7 @@ class CriarEvento extends Component
         $this->validate([
             'titulo' => 'required|min:5',
             'data_hora' => 'required|date|after:today',
-            'data_fim' => 'required|date|after:data_hora', // <--- Validação nova
+            'data_fim' => 'required|date|after:data_hora',
             'limite_vagas' => 'integer|min:0',
         ]);
 
@@ -31,13 +31,15 @@ class CriarEvento extends Component
             'titulo' => $this->titulo,
             'descricao' => $this->descricao,
             'data_hora' => $this->data_hora,
-            'data_fim' => $this->data_fim, // <--- Salvar
+            'data_fim' => $this->data_fim,
             'local' => $this->local,
             'limite_vagas' => $this->limite_vagas,
         ]);
 
-        session()->flash('message', 'Evento criado com sucesso!');
-        return redirect()->route('eventos.index');
+        session()->flash('message', 'Aula criada com sucesso! Agora você pode anexar o material.');
+        
+        // MUDANÇA AQUI: Redireciona para 'minhas-aulas' em vez de 'eventos'
+        return redirect()->route('aulas.index');
     }
 
     public function render()
