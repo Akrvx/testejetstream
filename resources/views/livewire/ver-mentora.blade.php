@@ -14,7 +14,6 @@
                     <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-1 justify-center sm:justify-start">
                         <p class="text-indigo-100 text-lg font-medium">{{ $this->mentora->area_atuacao }}</p>
                         
-                        <!-- NOVO: Nível em destaque -->
                         @if($this->mentora->nivel_experiencia)
                             <span class="hidden sm:inline text-indigo-300">•</span>
                             <span class="inline-block px-3 py-0.5 bg-white/20 rounded-full text-sm backdrop-blur-sm border border-white/30">
@@ -36,7 +35,6 @@
                         </p>
                     </div>
 
-                    <!-- Redes Profissionais (ATUALIZADO COM GITHUB) -->
                     @if($this->mentora->linkedin_url || $this->mentora->github_url)
                     <div>
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3 border-b dark:border-gray-700 pb-2">Conecte-se</h3>
@@ -67,22 +65,38 @@
                     </p>
                     
                     <div class="mt-2">
-                        @if($solicitacaoEnviada)
-                            <div class="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-300 px-4 py-3 rounded relative mb-4" role="alert">
+                        @if($statusSolicitacao === 'aceito')
+                            <!-- ESTADO ACEITO -->
+                            <div class="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-300 px-4 py-3 rounded relative mb-4">
+                                <strong class="font-bold">Mentoria Aceita! 🎉</strong>
+                                <span class="block sm:inline text-sm">Você já pode entrar em contato.</span>
+                            </div>
+                            
+                            <a href="mailto:{{ $this->mentora->email }}" class="block w-full text-center bg-green-600 dark:bg-green-500 hover:bg-green-700 dark:hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition">
+                                📧 Enviar E-mail
+                            </a>
+
+                        @elseif($statusSolicitacao === 'pendente')
+                            <!-- ESTADO PENDENTE -->
+                            <div class="bg-yellow-100 dark:bg-yellow-900/50 border border-yellow-400 dark:border-yellow-600 text-yellow-800 dark:text-yellow-200 px-4 py-3 rounded relative mb-4">
                                 <strong class="font-bold">Solicitação Enviada!</strong>
-                                <span class="block sm:inline text-sm">Aguarde o contato.</span>
+                                <span class="block sm:inline text-sm">Aguarde a resposta da mentora.</span>
                             </div>
                             
                             <button disabled class="w-full bg-gray-400 dark:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg cursor-not-allowed shadow-none">
-                                Solicitação Pendente
+                                Aguardando Aprovação
                             </button>
+
                         @else
+                            <!-- ESTADO INICIAL (Nunca pediu ou Recusado) -->
                             <button 
                                 wire:click="solicitarMentoria" 
                                 wire:loading.attr="disabled"
-                                class="w-full bg-green-600 dark:bg-green-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 dark:hover:bg-green-600 transition shadow-md flex justify-center items-center">
+                                class="w-full bg-indigo-600 dark:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition shadow-md flex justify-center items-center">
                                 
-                                <span wire:loading.remove>Solicitar Mentoria</span>
+                                <span wire:loading.remove>
+                                    {{ $statusSolicitacao === 'recusado' ? 'Tentar Novamente' : 'Solicitar Mentoria' }}
+                                </span>
                                 
                                 <span wire:loading>
                                     <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

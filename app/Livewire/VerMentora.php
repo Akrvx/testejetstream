@@ -8,12 +8,12 @@ use App\Models\Solicitacao;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NovaSolicitacaoMentoria;
-use Illuminate\Support\Facades\Log; // Importante para logar erros
+use Illuminate\Support\Facades\Log;
 
 class VerMentora extends Component
 {
     public User $mentora;
-    public $solicitacaoEnviada = false;
+    public $statusSolicitacao = null; // Mudamos de boolean para string (null, 'pendente', 'aceito')
 
     public function mount($id)
     {
@@ -21,45 +21,43 @@ class VerMentora extends Component
         
         if ($this->mentora->role !== 'mentora') { abort(404); }
 
-        $jaSolicitou = Solicitacao::where('mentora_id', $this->mentora->id)
+        // Busca a solicitação MAIS RECENTE entre essa aluna e essa mentora
+        $solicitacao = Solicitacao::where('mentora_id', $this->mentora->id)
             ->where('aluna_id', Auth::id())
-            ->exists();
+            ->latest() // Pega a última caso tenha mais de uma
+            ->first();
 
-        if ($jaSolicitou) {
-            $this->solicitacaoEnviada = true;
+        if ($solicitacao) {
+            $this->statusSolicitacao = $solicitacao->status;
         }
     }
 
     public function solicitarMentoria()
     {
-        // Aumenta o tempo limite do script para 120 segundos (2 minutos)
-        // Isso evita o erro "Maximum execution time of 30 seconds exceeded"
         set_time_limit(120);
 
         if (Auth::id() === $this->mentora->id) {
             return;
         }
 
-        // 1. Cria no Banco
+        // Se já está pendente ou aceito, não faz nada
+        if ($this->statusSolicitacao === 'pendente' || $this->statusSolicitacao === 'aceito') {
+            return;
+        }
+
         $solicitacao = Solicitacao::create([
             'mentora_id' => $this->mentora->id,
             'aluna_id' => Auth::id(),
             'status' => 'pendente'
         ]);
 
-        // 2. Tenta enviar o E-mail
         try {
             Mail::to($this->mentora->email)->send(new NovaSolicitacaoMentoria($solicitacao));
         } catch (\Throwable $e) {
-            // Usamos \Throwable para capturar qualquer erro, inclusive timeouts
-            // O sistema não vai travar na tela da usuária, mas vai salvar o erro no log
-            Log::error('Erro crítico ao enviar email de mentoria: ' . $e->getMessage());
-            
-            // Opcional: Você pode adicionar um aviso visual se quiser, 
-            // mas aqui deixamos prosseguir para não frustrar a usuária já que o pedido foi salvo no banco.
+            Log::error('Erro ao enviar email: ' . $e->getMessage());
         }
 
-        $this->solicitacaoEnviada = true;
+        $this->statusSolicitacao = 'pendente';
     }
 
     public function render()
