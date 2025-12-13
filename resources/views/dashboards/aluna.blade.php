@@ -8,10 +8,18 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
-            <!-- DESTAQUE: Próxima Aula (Lógica Direta na View) -->
+            <!-- DESTAQUE: Próxima Aula ou Aula Acontecendo Agora -->
             @php
+                // Busca eventos inscritos que AINDA NÃO ACABARAM
+                // Lógica: Data Fim > Agora OU (se não tiver fim) Data Início > Agora - 2h
                 $proximaAula = Auth::user()->eventosParticipando()
-                    ->where('data_hora', '>=', now())
+                    ->where(function($query) {
+                        $query->where('data_fim', '>=', now())
+                              ->orWhere(function($q) {
+                                  $q->whereNull('data_fim')
+                                    ->where('data_hora', '>=', now()->subHours(2)); // Fallback se não tiver data fim
+                              });
+                    })
                     ->orderBy('data_hora', 'asc')
                     ->first();
             @endphp
@@ -24,8 +32,13 @@
                     <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-4">
                         <div>
                             <div class="text-indigo-200 text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-2">
-                                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                                Próxima Aula • {{ $proximaAula->data_hora->format('d/m \à\s H:i') }}
+                                @if($proximaAula->data_hora <= now())
+                                    <span class="w-2 h-2 bg-red-400 rounded-full animate-pulse"></span>
+                                    ACONTECENDO AGORA
+                                @else
+                                    <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                                    PRÓXIMA AULA • {{ $proximaAula->data_hora->format('d/m \à\s H:i') }}
+                                @endif
                             </div>
                             <h2 class="text-2xl font-bold mb-1">{{ $proximaAula->titulo }}</h2>
                             <p class="text-indigo-100 text-sm truncate max-w-xl">{{ $proximaAula->local ?? 'Local: Online' }}</p>
